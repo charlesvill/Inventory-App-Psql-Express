@@ -1,17 +1,10 @@
 const { Router } = require("express");
-
+const testQuery = require("../controllers/searchController.js");
 const searchRouter = Router();
 
-searchRouter.use("/", (req, res) => {
 
-  const results = [{
-    name: "placeholder name", 
-    description: "this should be working"
-  }];
-  res.render("search", {
-    page: "results",
-    content: results
-  });
+searchRouter.use("/", (req, res) => {
+  testQuery(req, res);
 });
 
 module.exports = searchRouter;
