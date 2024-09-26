@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const indexRouter = require("./routes/index.js");
-const searchRouter = require("./routes/search.js");
+const carRouter = require("./routes/cars.js");
+const planeRouter = require("./routes/planes.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Define routes
 app.use("/", indexRouter);
-app.use("/search", searchRouter);
+app.use("/cars", carRouter);
+//plane one is not completed
+app.use("/planes", planeRouter);
 
 // 404 handler for undefined routes
 app.use((req, res, next) => {

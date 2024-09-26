@@ -1,11 +1,28 @@
 <div class="accentStripe light">
 </div>
 <div class="accentStripe dark">
-</div>     
+</div>
 
 <div class="headerCont">
   <div>
-       <div>
+       <div class="navSidebar" id="navTrigger">
+            <div class="nav search">
+                <div class="category"><a href="/cars">cars</a></div>
+                <div class="category"><a href="/planes">planes</a></div>
+            </div>
+            <div>
+                add
+            </div>
+            <div>
+                user info
+            </div>
+       </div>
+       <div class="hflex leftCont">
+            <div class="navBtn"  onclick="handleNavToggle()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
            <a href="/">
                <h3>RadioDB</h3>
            </a>
@@ -16,4 +33,12 @@
            <button type="submit" class="postBtn">Account</button>
        </form>
   </div>
+    <script>
+        function handleNavToggle() {
+            const nav = document.getElementById("navTrigger");
+            if(nav){
+                nav.classList.toggle('visible');
+            }
+        }
+    </script>
 </div>

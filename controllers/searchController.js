@@ -1,13 +1,28 @@
-const testQuery = require("../db/queries.js");
+const db = require("../db/queries.js");
 
-async function testGetCars(req, res) {
-  const query = await testQuery();
+
+async function getAll(req, res, model) {
+  const query = await db.selectAll(model);
 
   res.render("search", {
     page: "results",
-    content: query 
+    content: query
   });
 }
 
+async function getByType(req, res) {
+  const category = req.params.model;
+  const query = await db.selectAllOfType(category);
 
-module.exports = testGetCars;
+  res.render("search", {
+    page: "results",
+    content: query
+  });
+
+}
+
+
+module.exports = {
+  getAll,
+  getByType,
+};

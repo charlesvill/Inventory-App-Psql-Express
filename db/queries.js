@@ -1,10 +1,22 @@
 const pool = require("./pool.js");
 
-async function testQuery() {
+async function selectAllOfType(category) {
   const { rows } = await pool.query(
-    "SELECT * FROM cars WHERE manufacturer_id IN (SELECT manufacturer_id FROM manufacturers WHERE name = 'Kyosho')"
+    "SELECT * FROM $1", [category]
   );
   return rows;
 }
 
-module.exports = testQuery;
+async function selectAll(model) {
+  const query = `SELECT * FROM ${model}`
+  const { rows } = await pool.query(query);
+
+  return rows;
+}
+
+module.exports = {
+
+  selectAllOfType,
+  selectAll
+
+};
