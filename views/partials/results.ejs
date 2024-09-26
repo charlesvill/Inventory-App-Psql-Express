@@ -1,11 +1,15 @@
-<div>
-    <ul>
-        <% content.map((element)=> { %>
-
-            <li>
-                <p><%= element.name %> </p>
-                <p><%= element.description%> </p>
-            </li>
+   <% content.map((element)=> { %>
+            <div class="item">
+               <div class="frame">
+                   <img src=<%=`${element.img_url}` %> alt="image" class="image">
+               </div>
+               <div>
+                    <div>
+                        <p class="bold"><%= element.name %> </p>
+                   </div>
+                   <div>
+                        <p><%= element.description%> </p>
+                   </div>
+               </div>
+            </div>
     <% }); %>
-    </ul>
-</div>

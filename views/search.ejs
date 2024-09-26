@@ -1,22 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RadioDB</title>
+
+    <%- include('./partials/head') %>
 </head>
 <body>
     <header>
 
-        <%- include('./partials/header.ejs'); %>
+        <%- include('./partials/header'); %>
     </header>
 
     <main>
-        <div>
-           Hello from the search page!
-        </div>
-        <%- include(`./partials/${page}`, {content: content}) %>
+        <div class="hflex">
+            <div class="search nav">
 
+                Search Radio Control
+                <h6>Cars</h6>
+                <ul>
+                    <li>
+
+                        Power
+                        <ul>
+                            <li>Electric</li>
+                            <li>Nitro</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Brand
+                        <ul>
+                            <li>Kyosho</li>
+                            <li>Team Associated</li>
+                        </ul>
+
+                    </li>
+
+
+                </ul>
+            </div>
+            <div class="search Cont">
+                <form action="" method="get" class="form">
+                    <div className="searchbar rounded">
+                        <input
+                          type="text"
+                          placeholder="Search Rc"
+                          name="searchbar"
+                          className=""
+                        />
+                    </div>
+                </form>
+                  <div class="results container">
+                    <%- include(`./partials/${page}`, {content: content}) %>
+                  </div>
+            </div>
+        </div>
     </main>
 
     <footer>

@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const indexRouter = Router();
 
-indexRouter.use("/", (req, res) => {
+indexRouter.get("/", (req, res) => {
   //home page using controller
   res.render("index");
 });

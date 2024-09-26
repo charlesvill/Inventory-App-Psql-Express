@@ -1,0 +1,174 @@
+
+:root {
+  --foreground: #FFF;
+  --contentBody: #FFF;
+  --nuetral: #CFCDC2;
+  --charcoal: #4A545D;
+  --messagebody: #AAD6A0;
+  --darkcontrast: #f51720;
+  --lightaccent: #F8D210;
+ font-family: 'Arial', monospace;
+
+}
+body {
+  margin: 0;
+  background-color: var(--foreground);
+  
+}
+header, footer {
+  background-color: var(--foreground);
+}
+footer{
+  font-size: .8em;
+  font-family: inherit;
+}
+header {
+  margin: inherit;
+}
+.headerCont{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.accentStripe{
+
+  height: .3em;
+  margin: 0 ;
+  width: 100%;
+  margin-bottom: .2em;
+}
+.accentStripe.light{
+
+  background-color: var(--lightaccent);
+}
+.accentStripe.dark{
+  background-color: var(--darkcontrast);
+}
+.postBtn.Cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+Btn {
+  background-color: var(--darkcontrast);
+  color: var(--contentBody);
+  border: none;
+  border-radius: 8px;
+  padding: .3em;
+  font-family: inherit;
+  font-weight: bold;
+}
+Btn:hover {
+  background-color: var(--nuetral);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.bold {
+  font-weight: 800;
+}
+main {
+  height: 100vh;
+
+  margin: 0 auto;
+  width: clamp(380px, 80%, 1200px);
+  background-color: var(--contentBody);
+}
+.hflex {
+  display: flex;
+  flex-direction: row;
+}
+.search.nav{
+  font-size: .8em;
+  color: var(--charcoal);
+  border-right: var(--nuetral) solid 2px;
+}
+ul {
+  margin: 0 auto;
+  text-indent: 0;
+  list-style-type: none;
+  background-color: var(--foreground);
+  height: auto;
+  display:flex;
+  flex-direction: column;
+}
+/* this below is for results items */
+.item{
+  max-width:250px;
+  margin: .5em;
+  border: 1px solid var(--charcoal);
+  text-align: justify;
+  padding: .3em;
+}
+
+.item:hover{
+  box-shadow: 0em 0em .0em .02em  black;
+}
+
+.linkCont {
+  text-align: center;
+}
+
+
+.frame{
+  width: 250px;
+  max-height: 150px;
+  background-color:var(--foreground);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image{
+  max-height: 150px;
+}
+.star {
+  color: red;
+}
+.price {
+  color: lightsalmon;
+}
+.results.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* above is for results items */
+/* this is for search bar styling */
+
+
+/* this is for search bar styling */
+footer {
+  color: black;
+  padding: 1em;
+}
+
+.footerCont {
+  width: clamp(500px, 100%, 1280px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.linksCont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ghLogo {
+  width: 1em;
+}
+
+form {
+  background-color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 1rem;
+}
