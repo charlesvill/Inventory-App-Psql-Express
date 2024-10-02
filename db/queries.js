@@ -15,9 +15,9 @@ async function selectAll(model) {
 }
 
 async function selectDropDownFields() {
-  const brands = await pool.query('SELECT DISTINCT name FROM manufacturers');
-  const scales = await pool.query('SELECT DISTINCT scale FROM scales');
-  const terrains = await pool.query('SELECT DISTINCT terrain FROM terrains');
+  const brands = await pool.query('SELECT manufacturer_id, name FROM manufacturers');
+  const scales = await pool.query('SELECT id, scale FROM scales');
+  const terrains = await pool.query('SELECT id, terrain FROM terrains');
   const powerPlants = await pool.query('SELECT DISTINCT powerplant FROM powerplants');
   const skillLevels = await pool.query('SELECT DISTINCT skill_level FROM skill_levels');
 
@@ -30,8 +30,45 @@ async function selectDropDownFields() {
   };
 }
 
+async function insertCarFields(fields) {
+  console.log(fields);
+  // man id
+  // powerplant id
+  // scale id
+  // terrain id
+  const manId = await pool.query('SELECT manufacturer_id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
+  const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
+  const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
+  const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);
+  console.log("the terrain id is: ", terrainId.rows);
+
+  const carQuery = `INSERT INTO cars (
+    name, 
+    description, 
+    img_url, 
+    manufacturer_id, 
+    powerplant_id, scales_id, 
+    terrain_id
+    ) VALUES (
+    $1, $2, $3, $4, $5, $6, $7)
+     `;
+  console.log(carQuery);
+  console.log(fields.img_url);
+  await pool.query(carQuery,
+    [
+      fields.name,
+      fields.description,
+      fields.img_url,
+      manId.rows[0].manufacturer_id,
+      powerPlantId.rows[0].id,
+      scaleId.rows[0].id,
+      terrainId.rows[0].id
+    ]);
+}
+
 module.exports = {
   selectAllOfType,
   selectAll,
   selectDropDownFields,
+  insertCarFields,
 };

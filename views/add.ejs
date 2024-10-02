@@ -9,7 +9,7 @@
 </header>
 <main>
     <div>
-        <form action="">
+        <form action="/add" method="post">
             <select name="model_type" id="model_type">
                 <option>RC Car</option>
                 <option>RC Plane</option>
@@ -23,8 +23,8 @@
             </select>
             <label for="description">Description</label>
             <textarea name="description" id="description" cols="30" rows="10" placeholder="Description or features of the car"></textarea>
-            <label for="imgUrl">Image Url</label>
-            <input type="text" placeholder="Url" name="imgUrl">
+            <label for="img_url">Image Url</label>
+            <input type="text" placeholder="Url" name="img_url">
             <label for="scale">Scale</label>
             <select name="scale" id="scale">
                 <% data.scales.map(scale => { %>
