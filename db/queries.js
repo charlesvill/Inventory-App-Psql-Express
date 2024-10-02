@@ -25,13 +25,12 @@ async function selectDropDownFields() {
     brands: brands.rows,
     scales: scales.rows,
     terrains: terrains.rows,
-    powerPlants: powerPlants.rows,
-    skillLevels: skillLevels.rows
+    powerplants: powerPlants.rows,
+    skill_levels: skillLevels.rows
   };
 }
 
 module.exports = {
-
   selectAllOfType,
   selectAll,
   selectDropDownFields,

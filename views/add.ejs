@@ -21,7 +21,37 @@
                    <option><%= brand.name %></option>
                <% }) %>
             </select>
-
+            <label for="description">Description</label>
+            <textarea name="description" id="description" cols="30" rows="10" placeholder="Description or features of the car"></textarea>
+            <label for="imgUrl">Image Url</label>
+            <input type="text" placeholder="Url" name="imgUrl">
+            <label for="scale">Scale</label>
+            <select name="scale" id="scale">
+                <% data.scales.map(scale => { %>
+                   <option><%= scale.scale %></option>
+               <% }) %>
+            </select>
+            <label for="terrain">Terrain</label>
+            <select name="terrain" id="terrain">
+                <% data.terrains.map(terrain => { %>
+                   <option><%= terrain.terrain %></option>
+                <% }) %>
+            </select>
+            <label for="powerplant">Power Plant</label>
+            <select name="powerplant" id="powerplant">
+                <% data.powerplants.map(powerplant => { %>
+                   <option><%= powerplant.powerplant%></option>
+                <% }) %>
+            </select>
+            <label for="skill_level">Skill Level</label>
+            <select name="skill_level" id="skill_level">
+                <% data.skill_levels.map(skill_level => { %>
+                   <option><%= skill_level.skill_level%></option>
+                <% }) %>
+            </select>
+            <label for="skill_description">Skill Description</label>
+            <textarea name="skill_description" id="" cols="30" rows="10" placeholder="What makes this the skill selected?"></textarea>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </main>
