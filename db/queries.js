@@ -15,18 +15,18 @@ async function selectAll(model) {
 }
 
 async function selectDropDownFields() {
-  const { rows } = await pool.query('SELECT DISTINCT name FROM manufacturers');
-  // const scales = await pool.query('SELECT DISTINCT scale FROM scales');
-  // const terrains = await pool.query('SELECT DISTINCT terrain FROM terrains');
-  // const powerPlants = await pool.query('SELECT DISTINCT power_plant FROM power_plants');
-  // const skillLevels = await pool.query('SELECT DISTINCT skill_level FROM skill_levels');
+  const brands = await pool.query('SELECT DISTINCT name FROM manufacturers');
+  const scales = await pool.query('SELECT DISTINCT scale FROM scales');
+  const terrains = await pool.query('SELECT DISTINCT terrain FROM terrains');
+  const powerPlants = await pool.query('SELECT DISTINCT powerplant FROM powerplants');
+  const skillLevels = await pool.query('SELECT DISTINCT skill_level FROM skill_levels');
 
   return {
-    brands: rows,
-    // scales: scales,
-    // terrains: terrains,
-    // powerPlants: powerPlants,
-    // skillLevels: skillLevels
+    brands: brands.rows,
+    scales: scales.rows,
+    terrains: terrains.rows,
+    powerPlants: powerPlants.rows,
+    skillLevels: skillLevels.rows
   };
 }
 

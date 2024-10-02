@@ -8,11 +8,6 @@
     <%- include('./partials/header'); %>
 </header>
 <main>
-
-</main>
-<footer>
-    <%- include('./partials/footer');%>
-</footer>
     <div>
         <form action="">
             <select name="model_type" id="model_type">
@@ -20,10 +15,18 @@
                 <option>RC Plane</option>
             </select>
             <input type="text" name="name" id="name" placeholder="name">
+            <label for="manufacturer">Brand</label>
             <select name="manufacturer">
-                <%  %>
+                <% data.brands.map(brand => { %>
+                   <option><%= brand.name %></option>
+               <% }) %>
             </select>
 
         </form>
     </div>
+</main>
+<footer>
+    <%- include('./partials/footer');%>
+</footer>
+
 </html>
