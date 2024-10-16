@@ -1,4 +1,5 @@
 const db = require("../db/queries.js");
+const model = require("../models/index.js");
 
 
 async function getAll(req, res, model) {
@@ -21,6 +22,12 @@ async function getByType(req, res) {
 
 }
 
+async function getByFilters(req, res) {
+  const searchCode = req.params.category;
+
+}
+
+console.log(model.handleSearch('m12'));
 
 module.exports = {
   getAll,
