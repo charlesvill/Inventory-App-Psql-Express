@@ -2,27 +2,28 @@ const tableData = [
   {
     m: {
       table: 'manufacturers',
-      column: 'name',
+      column: 'manufacturer_id',
       id: 'manufacturer_id'
     }
   },
   {
     p: {
       table: 'powerplants',
-      column: 'powerplant',
+      column: 'powerplant_id',
       id: 'id'
     }
   },
   {
     s: {
       table: 'scales',
-      column: 'id'
+      column: 'scales_id'
     }
   },
   {
     t: {
       table: 'terrains',
-      column: 'id'
+      column: 'terrain_id',
+      id: 'id'
     }
   },
 ];
@@ -35,9 +36,9 @@ function handleSearch(code) {
 
   try {
     const foundEntry = tableData.find(element => element.hasOwnProperty(selector));
-    if(!foundEntry){
-          throw new Error('could not match code selector with a table');
-    } 
+    if (!foundEntry) {
+      throw new Error('could not match code selector with a table');
+    }
     const tableInfo = foundEntry[selector];
 
     return {

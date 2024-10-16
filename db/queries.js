@@ -7,6 +7,7 @@ async function selectAllOfType(category) {
   return rows;
 }
 
+
 async function selectAll(model) {
   const query = `SELECT * FROM ${model}`
   const { rows } = await pool.query(query);
@@ -66,9 +67,21 @@ async function insertCarFields(fields) {
     ]);
 }
 
+async function selectByFilter(model, tableInfo) {
+  const query = `
+  SELECT * FROM ${model} 
+  WHERE ${tableInfo.column} = ${tableInfo.value}; 
+  `;
+
+  console.log(query);
+  const { rows } = await pool.query(query);
+  return rows;
+}
+
 module.exports = {
   selectAllOfType,
   selectAll,
   selectDropDownFields,
   insertCarFields,
+  selectByFilter
 };

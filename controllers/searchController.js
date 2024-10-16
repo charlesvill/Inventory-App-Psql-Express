@@ -24,12 +24,21 @@ async function getByType(req, res) {
 
 async function getByFilters(req, res) {
   const searchCode = req.params.category;
-
+  const result = model.handleSearch(searchCode)
+  console.log('param is: ', searchCode);
+  console.log(result);
+  const query = await db.selectByFilter("cars", result);
+  console.log("this should be after the")
+  console.dir(query);
+  res.render("search", {
+    page: "results",
+    content: query
+  });
 }
 
-console.log(model.handleSearch('m12'));
 
 module.exports = {
   getAll,
   getByType,
+  getByFilters
 };
