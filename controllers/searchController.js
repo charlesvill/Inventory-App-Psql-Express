@@ -51,13 +51,12 @@ async function getByFilters(req, res) {
 
   const tableData = model.handleSearch(searchCode)
   console.log(tableData);
-  // const query = await db.selectByFilter("cars", tableData);
-  // console.log("this should be after the")
-  // console.dir(query);
-  // res.render("search", {
-  //   page: "results",
-  //   content: query
-  // });
+  const query = await db.selectByFilter("cars", tableData);
+  console.dir(query);
+  res.render("search", {
+    page: "results",
+    content: query
+  });
 }
 
 

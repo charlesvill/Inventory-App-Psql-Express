@@ -68,13 +68,25 @@ async function insertCarFields(fields) {
 }
 // this is going to be an array of table info
 async function selectByFilter(model, tableInfo) {
-  const query = `
+  const tableData = tableInfo;
+  const firstTable = tableData.shift();
+  const baseQuery = `
   SELECT * FROM ${model} 
-  WHERE ${tableInfo.column} = ${tableInfo.value}; 
+  WHERE ${firstTable.column} = ${firstTable.value} 
   `;
 
-  console.log(query);
-  const { rows } = await pool.query(query);
+  if(tableData.length < 1 ) {
+    const { rows } = await pool.query(baseQuery);
+    return rows;
+  }
+
+
+  const multiQuery = tableInfo.reduce((acc, currentElem) => {
+    return acc + `AND ${currentElem.column} = ${currentElem.value}`
+  }, baseQuery);
+
+  console.log(multiQuery);
+  const { rows } = await pool.query(multiQuery);
   return rows;
 }
 
