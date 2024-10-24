@@ -66,7 +66,7 @@ async function insertCarFields(fields) {
       terrainId.rows[0].id
     ]);
 }
-
+// this is going to be an array of table info
 async function selectByFilter(model, tableInfo) {
   const query = `
   SELECT * FROM ${model} 
@@ -77,6 +77,18 @@ async function selectByFilter(model, tableInfo) {
   const { rows } = await pool.query(query);
   return rows;
 }
+
+
+async function selectByMultiFilters(model, tableArr){
+
+  //frame fn = arr.shift()
+  //others = arr.reduce((accumulator, currElem) => 
+  //return acc + "and" + currElem)
+
+  // combine the firsta nd the last ones and test. 
+
+}
+
 
 module.exports = {
   selectAllOfType,

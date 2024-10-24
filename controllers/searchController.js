@@ -20,7 +20,6 @@ async function getByType(req, res) {
     page: "results",
     content: query
   });
-
 }
 
 function paramValidator(param) {
@@ -43,16 +42,22 @@ async function getByFilters(req, res) {
     return res.status(400).json({ error: "Invalid search parameter" });
   }
 
-  const result = model.handleSearch(searchCode)
-  console.log('param is: ', searchCode);
-  console.log(result);
-  const query = await db.selectByFilter("cars", result);
-  console.log("this should be after the")
-  console.dir(query);
-  res.render("search", {
-    page: "results",
-    content: query
-  });
+  // refactor this that we should input the code and the model 
+  // should output the query and the send the query to get the 
+  // results back.
+
+  // model should return the table information for the codes
+  // does this handle more than one?
+
+  const tableData = model.handleSearch(searchCode)
+  console.log(tableData);
+  // const query = await db.selectByFilter("cars", tableData);
+  // console.log("this should be after the")
+  // console.dir(query);
+  // res.render("search", {
+  //   page: "results",
+  //   content: query
+  // });
 }
 
 

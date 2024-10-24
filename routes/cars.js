@@ -13,10 +13,7 @@ carRouter.get("/search/:category", (req, res) => {
   searchController.getByFilters(req, res);
 });
 // separate path for the search bar queries because 
-// it will use different type of db query
 
-//this routing needs work because stylesheets are coming through as requests to this handle. 
-//need also add validation before sending to the model.
 
 module.exports = carRouter;
 
