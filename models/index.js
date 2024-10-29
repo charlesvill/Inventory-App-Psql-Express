@@ -30,22 +30,38 @@ const tableData = [
 
 let filters = [];
 
-
-function multiSearch() {
-
-}
-
 function handleSearch(code) {
   // code e.g m3 parsed into 'm' and '3' which returns 
   // obj with table and column name with the value 3 to query
 
   // checks if code present in filters array and adds if not
   // allows for stringing of multiple filters w/o repeating same filters
-  const repeatFilter = filters.find(element => element === code);
 
-  if (!repeatFilter) {
+  function repeatFilterCheck() {
+    const table = code.charAt(0);
+    const value = code.slice(1);
+
+    for (let i = 0; i < filters.length; i++) {
+      const elemTable = filters[i].charAt(0);
+      const elemVal = filters[i].slice(1);
+
+      if (elemTable === table) {
+        if (value === elemVal) {
+          return; // Code already exists, so exit without pushing
+        } else {
+          filters[i] = code; // Update the element directly
+          return;
+        }
+      }
+    }
+
+    // If no matching element was found, add the new code
     filters.push(code);
   }
+
+  // Usage
+  repeatFilterCheck("yourCodeHere"); // Call with the desired code
+
 
   filters.forEach((filter, index) => {
     console.log('filter ', index, ' ', filter)
