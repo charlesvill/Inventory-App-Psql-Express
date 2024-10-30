@@ -22,25 +22,10 @@ async function getByType(req, res) {
   });
 }
 
-function paramValidator(param) {
-  const value = Number(param.slice(1));
-  console.log('value is', value);
-  if (isNaN(value)) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
 async function getByFilters(req, res) {
   const searchCode = req.params.category;
-  const validator = paramValidator(searchCode);
-  console.log("is the parameter valid? ", validator);
-  // this skips stray static asset requests to avoid throwing errors
 
-  if (!validator) {
-    return res.status(400).json({ error: "Invalid search parameter" });
-  }
+  // this skips stray static asset requests to avoid throwing errors
 
   // refactor this that we should input the code and the model 
   // should output the query and the send the query to get the 
