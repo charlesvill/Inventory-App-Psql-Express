@@ -24,11 +24,12 @@ const searchMethodMW = (req, res, next) => {
 
   if (method === "remove") {
     // trigger search controller method for remove
+    searchController.removeFilter(req, res);
   }
 }
 
 const fetchResMW = (req, res, next) => {
-  searchController.getByFilters(req, res);
+  searchController.addFilter(req, res);
 }
 
 const errHandler = (err, req, res, next) => {
@@ -36,7 +37,7 @@ const errHandler = (err, req, res, next) => {
   res.status(404).render(
     "404", {
     err: err
-  })
+  });
 }
 
 //
