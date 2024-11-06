@@ -15,26 +15,23 @@
                 Search Radio Control
                 <a href="/cars"><h6>Cars</h6></a>
                 <ul>
+                    <% fieldData.map((element) => {%>
                     <li>
-
-                        Power
+                        <%const data =  Object.values(element)[0]%>
+                        <%= data.fieldName%>
                         <ul>
-                            <a href="/cars/search/p2"><li>Electric</li></a>
-                            <a href="/cars/search/p1"><li>Nitro</li></a>
-
+                            need to fix the code that is added here because they're not correct
+                            <% data.rows.map((element) => { %>
+                                <li><a href="/cars/search/<%=data.code%>"><%= Object.values(element)[0]%></a></li>
+                            <%}) %>
                         </ul>
                     </li>
-                    <li>
-                        Brand
-                        <ul>
-                            <a href="/cars/search/m1"><li>Kyosho</li></a>
-                            <li>Team Associated</li>
-                            <a href="/cars/search/m2"><li>HPI</li></a>
-                        </ul>
-
-                    </li>
 
 
+
+
+
+                    <% }) %>
                 </ul>
             </div>
             <div class="search Cont">

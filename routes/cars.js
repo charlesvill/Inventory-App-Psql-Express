@@ -18,6 +18,7 @@ const searchMethodMW = (req, res, next) => {
 
   if (!method) {
     next();
+    return;
   }
 
   console.log("we have method content of: ", method);

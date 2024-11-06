@@ -1,6 +1,5 @@
 const db = require('../db/queries.js');
 
-
 async function getAddForm(req, res) {
 
   const dropLists = await db.selectDropDownFields();
@@ -48,7 +47,6 @@ async function addCar(req, res) {
   );
 
   res.redirect("/");
-
 
   // get all the forms 
   // pass data to query

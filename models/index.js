@@ -1,31 +1,56 @@
+const db = require("../db/queries.js");
+
 const tableData = [
   {
     m: {
+      fieldName: 'Brand',
       table: 'manufacturers',
-      column: 'manufacturer_id',
-      id: 'manufacturer_id'
+      column: 'name',
+      id: 'manufacturer_id',
+      carId: 'manufacturer_id',
+      distinct: false
     }
   },
   {
     p: {
+      fieldName: 'Power plant',
       table: 'powerplants',
-      column: 'powerplant_id',
-      id: 'id'
+      column: 'powerplant',
+      id: 'id',
+      carId: 'powerplant_id',
+      distinct: true
     }
   },
   {
     s: {
+      fieldName: 'Scale',
       table: 'scales',
-      column: 'scales_id'
+      column: 'scale',
+      id: 'id',
+      carId: 'scale_id',
+      distinct: false
     }
   },
   {
     t: {
+      fieldName: 'Terrain',
       table: 'terrains',
-      column: 'terrain_id',
-      id: 'id'
+      column: 'terrain',
+      id: 'id',
+      carId: 'terrain_id',
+      distinct: false
     }
   },
+  {
+    l: {
+      fieldName: 'Skill Level',
+      table: 'skill_levels',
+      column: 'skill_level',
+      id: 'id',
+      carId: 'skill_id',
+      distinct: true
+    }
+  }
 ];
 
 
@@ -69,15 +94,18 @@ const fetchTableData = () => {
       }
       const tableInfo = foundEntry[selector];
 
+      console.log(tableInfo);
+
       tableArr.push({
         table: tableInfo.table,
-        column: tableInfo.column,
+        column: tableInfo.carId,
         value: value
       });
     } catch (err) {
       console.error(err)
     }
   });
+  console.log("tablearr: ", tableArr);
   return tableArr;
 }
 
@@ -113,15 +141,50 @@ function handleRemoveFilter(code) {
   } catch (err) {
     console.error(err)
     return;
-  } 
-  
+  }
+
 
   // fetch the table data 
   const tableArr = fetchTableData();
   return tableArr;
 }
+async function fetchFieldData() {
+  let fetchData = [];
+
+  for (const object of tableData) {
+    const key = Object.keys(object)[0];
+    const value = Object.values(object)[0];
+    console.log(key);
+    const fieldName = value.fieldName;
+    const table = value.table;
+    const idColName = value.id;
+    console.log(idColName);
+    const column = value.column;
+    const distinct = value.distinct;
+
+    const rows = await db.selectTableRows(table, column, idColName, distinct);
+    const code = key.charAt(0) + rows[0][idColName];
+
+    fetchData.push({
+      [key]: {
+        fieldName: fieldName,
+        table: table,
+        column: column,
+        distinct: distinct,
+        code: code,
+        rows: [...rows]
+      }
+    });
+  }
+
+  console.log(fetchData);
+
+  fetchData.forEach(element => console.log(Object.values(element)[0].rows));
+  return fetchData;
+}
 
 module.exports = {
   handleSearch,
   handleRemoveFilter,
+  fetchFieldData,
 };

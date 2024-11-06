@@ -15,6 +15,15 @@ async function selectAll(model) {
   return rows;
 }
 
+async function selectTableRows(table, column, id, distinct = false) {
+  const query = `SELECT ${distinct ? "DISTINCT" : ""} ${column}, ${id} FROM ${table}`;
+  console.log(query);
+  
+  const { rows } = await pool.query(query);
+
+  return rows;
+}
+
 async function selectDropDownFields() {
   const brands = await pool.query('SELECT manufacturer_id, name FROM manufacturers');
   const scales = await pool.query('SELECT id, scale FROM scales');
@@ -74,8 +83,9 @@ async function selectByFilter(model, tableInfo) {
   SELECT * FROM ${model} 
   WHERE ${firstTable.column} = ${firstTable.value} 
   `;
+  console.log("baseQuery is: ", baseQuery);
 
-  if(tableData.length < 1 ) {
+  if (tableData.length < 1) {
     const { rows } = await pool.query(baseQuery);
     return rows;
   }
@@ -91,20 +101,10 @@ async function selectByFilter(model, tableInfo) {
 }
 
 
-async function selectByMultiFilters(model, tableArr){
-
-  //frame fn = arr.shift()
-  //others = arr.reduce((accumulator, currElem) => 
-  //return acc + "and" + currElem)
-
-  // combine the firsta nd the last ones and test. 
-
-}
-
-
 module.exports = {
   selectAllOfType,
   selectAll,
+  selectTableRows,
   selectDropDownFields,
   insertCarFields,
   selectByFilter
