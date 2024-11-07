@@ -18,11 +18,12 @@
                     <% fieldData.map((element) => {%>
                     <li>
                         <%const data =  Object.values(element)[0]%>
+                        <%const key = Object.keys(element)[0]%>
                         <%= data.fieldName%>
                         <ul>
-                            need to fix the code that is added here because they're not correct
-                            <% data.rows.map((element) => { %>
-                                <li><a href="/cars/search/<%=data.code%>"><%= Object.values(element)[0]%></a></li>
+                            <% data.rows.map((row) => { %>
+                                <% const code = key + row.id %>
+                                <li><a href="/cars/search/<%=code%>"><%= Object.values(row)[0]%></a></li>
                             <%}) %>
                         </ul>
                     </li>

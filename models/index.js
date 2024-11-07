@@ -6,7 +6,7 @@ const tableData = [
       fieldName: 'Brand',
       table: 'manufacturers',
       column: 'name',
-      id: 'manufacturer_id',
+      id: 'id',
       carId: 'manufacturer_id',
       distinct: false
     }
@@ -171,7 +171,6 @@ async function fetchFieldData() {
         table: table,
         column: column,
         distinct: distinct,
-        code: code,
         rows: [...rows]
       }
     });
