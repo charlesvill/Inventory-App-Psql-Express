@@ -99,7 +99,7 @@ async function selectByFilter(model, tableInfo) {
 
 
   const multiQuery = tableInfo.reduce((acc, currentElem) => {
-    return acc + ` AND ${currentElem.column} = ${currentElem.value}`
+    return acc + ` AND ${currentElem.modelId} = ${currentElem.value}`
   }, baseQuery);
 
   console.log(multiQuery);
