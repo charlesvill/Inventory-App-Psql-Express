@@ -78,10 +78,17 @@ async function insertCarFields(fields) {
 // this is going to be an array of table info
 async function selectByFilter(model, tableInfo) {
   const tableData = tableInfo;
-  const firstTable = tableData.shift();
+  const firstFilter = tableData.shift();
   const baseQuery = `
-  SELECT * FROM ${model} 
-  WHERE ${firstTable.column} = ${firstTable.value} 
+  SELECT ${firstFilter.table}.${firstFilter.column} AS label,   
+  cars.name,
+  ${model}.description,
+  ${model}.img_url
+  FROM ${model} 
+  JOIN ${firstFilter.table} on (
+  ${model}.${firstFilter.modelId} = ${firstFilter.table}.${firstFilter.id}
+  )
+  WHERE ${firstFilter.modelId} = ${firstFilter.value} 
   `;
   console.log("baseQuery is: ", baseQuery);
 

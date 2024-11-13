@@ -35,6 +35,7 @@ async function addFilter(req, res) {
   const query = await db.selectByFilter("cars", tableData);
   const fieldData = await model.fetchFieldData();
 
+  console.log("query is: ", query);
   res.render("search", {
     page: "results",
     content: query,

@@ -7,7 +7,7 @@ const tableData = [
       table: 'manufacturers',
       column: 'name',
       id: 'id',
-      carId: 'manufacturer_id',
+      modelId: 'manufacturer_id',
       distinct: false
     }
   },
@@ -17,7 +17,7 @@ const tableData = [
       table: 'powerplants',
       column: 'powerplant',
       id: 'id',
-      carId: 'powerplant_id',
+      modelId: 'powerplant_id',
       distinct: true
     }
   },
@@ -27,7 +27,7 @@ const tableData = [
       table: 'scales',
       column: 'scale',
       id: 'id',
-      carId: 'scale_id',
+      modelId: 'scale_id',
       distinct: false
     }
   },
@@ -37,7 +37,7 @@ const tableData = [
       table: 'terrains',
       column: 'terrain',
       id: 'id',
-      carId: 'terrain_id',
+      modelId: 'terrain_id',
       distinct: false
     }
   },
@@ -47,7 +47,7 @@ const tableData = [
       table: 'skill_levels',
       column: 'skill_level',
       id: 'id',
-      carId: 'skill_id',
+      modelId: 'skill_id',
       distinct: true
     }
   }
@@ -98,7 +98,9 @@ const fetchTableData = () => {
 
       tableArr.push({
         table: tableInfo.table,
-        column: tableInfo.carId,
+        column: tableInfo.column,
+        id: tableInfo.id,
+        modelId: tableInfo.modelId,
         value: value
       });
     } catch (err) {
