@@ -42,6 +42,8 @@ const tableData = [
     }
   },
   {
+    //this is broken. cars table doesnt have skill_id
+    //currently skill table references cars not the other way around
     l: {
       fieldName: 'Skill Level',
       table: 'skill_levels',

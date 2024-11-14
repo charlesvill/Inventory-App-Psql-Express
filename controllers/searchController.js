@@ -33,12 +33,10 @@ async function addFilter(req, res) {
 
   const data = model.handleSearch(searchCode);
   const tableData = data.tableData;
-  const filters = data.filters;
   //filters need to be passed to query to get labels as well
   const query = await db.selectByFilter(
     "cars", 
     tableData, 
-    filters
   );
   const fieldData = await model.fetchFieldData();
 

@@ -1,6 +1,8 @@
+   <% if(content.labels) {%>
    <% content.labels.map((label) => { %>
         <div><%= label %></div>
         <% }) %>
+    <% } %>
    <% content.rows.map((element)=> { %>
             <div class="item">
                <div class="frame">

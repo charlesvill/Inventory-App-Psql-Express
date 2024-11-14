@@ -4,7 +4,7 @@ async function selectAllOfType(category) {
   const { rows } = await pool.query(
     "SELECT * FROM $1", [category]
   );
-  return rows;
+  return { rows };
 }
 
 
@@ -12,7 +12,7 @@ async function selectAll(model) {
   const query = `SELECT * FROM ${model}`
   const { rows } = await pool.query(query);
 
-  return rows;
+  return { rows };
 }
 
 async function selectTableRows(table, column, id, distinct = false) {
@@ -95,7 +95,7 @@ async function queryLabels(tableInfo) {
   return labels;
 }
 // this is going to be an array of table info
-async function selectByFilter(model, tableInfo, filterCodes) {
+async function selectByFilter(model, tableInfo) {
   const tableData = tableInfo;
   const labels = await queryLabels(tableInfo);
   const firstFilter = tableData.shift();
