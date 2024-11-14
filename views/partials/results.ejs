@@ -1,4 +1,7 @@
-   <% content.map((element)=> { %>
+   <% content.labels.map((label) => { %>
+        <div><%= label %></div>
+        <% }) %>
+   <% content.rows.map((element)=> { %>
             <div class="item">
                <div class="frame">
                    <img src=<%=`${element.img_url}` %> alt="image" class="image">

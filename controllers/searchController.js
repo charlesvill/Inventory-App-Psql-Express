@@ -27,12 +27,19 @@ async function getByType(req, res) {
     fieldData: fieldData
   });
 }
-
+let filterArr = [];
 async function addFilter(req, res) {
   const searchCode = req.params.category;
 
-  const tableData = model.handleSearch(searchCode)
-  const query = await db.selectByFilter("cars", tableData);
+  const data = model.handleSearch(searchCode);
+  const tableData = data.tableData;
+  const filters = data.filters;
+  //filters need to be passed to query to get labels as well
+  const query = await db.selectByFilter(
+    "cars", 
+    tableData, 
+    filters
+  );
   const fieldData = await model.fetchFieldData();
 
   console.log("query is: ", query);

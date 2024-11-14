@@ -125,10 +125,10 @@ function handleSearch(code) {
     console.log('filter ', index, ' ', filter)
   });
 
-  const tableArr = fetchTableData();
+  const tableData= fetchTableData();
 
-  console.log(tableArr);
-  return tableArr;
+  console.log(tableData);
+  return {tableData, filters};
 }
 
 function handleRemoveFilter(code) {
@@ -150,6 +150,7 @@ function handleRemoveFilter(code) {
   const tableArr = fetchTableData();
   return tableArr;
 }
+
 async function fetchFieldData() {
   let fetchData = [];
 

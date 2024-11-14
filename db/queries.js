@@ -18,7 +18,7 @@ async function selectAll(model) {
 async function selectTableRows(table, column, id, distinct = false) {
   const query = `SELECT ${distinct ? "DISTINCT" : ""} ${column}, ${id} FROM ${table}`;
   console.log(query);
-  
+
   const { rows } = await pool.query(query);
 
   return rows;
@@ -75,9 +75,29 @@ async function insertCarFields(fields) {
       terrainId.rows[0].id
     ]);
 }
+async function queryLabels(tableInfo) {
+  let labels = [];
+  for (let i = 0; i < tableInfo.length; i++) {
+    const element = tableInfo[i];
+    const table = element.table;
+    const column = element.column;
+    const value = element.value;
+    const id = element.id;
+    const query = `SELECT ${column} AS label FROM ${table} WHERE ${id} = ${value}`;
+    console.log("query for label is : ", query);
+
+    const { rows } = await pool.query(query);
+    console.log("label rows: ", rows);
+    const label = rows[0].label;
+    console.log("current label is: ", label);
+    labels.push(label);
+  }
+  return labels;
+}
 // this is going to be an array of table info
-async function selectByFilter(model, tableInfo) {
+async function selectByFilter(model, tableInfo, filterCodes) {
   const tableData = tableInfo;
+  const labels = await queryLabels(tableInfo);
   const firstFilter = tableData.shift();
   const baseQuery = `
   SELECT ${firstFilter.table}.${firstFilter.column} AS label,   
@@ -94,7 +114,7 @@ async function selectByFilter(model, tableInfo) {
 
   if (tableData.length < 1) {
     const { rows } = await pool.query(baseQuery);
-    return rows;
+    return { rows, labels };
   }
 
 
@@ -104,7 +124,7 @@ async function selectByFilter(model, tableInfo) {
 
   console.log(multiQuery);
   const { rows } = await pool.query(multiQuery);
-  return rows;
+  return { rows, labels };
 }
 
 
