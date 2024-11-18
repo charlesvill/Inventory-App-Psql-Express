@@ -1,6 +1,11 @@
-   <% if(content.labels) {%>
-   <% content.labels.map((label) => { %>
-        <div><%= label %></div>
+   <% if(content.labels && content.labels.length > 0) {%>
+   <% content.labels.forEach((label) => { %>
+        <div class="labelCont">
+            <div><%= label.label %></div>
+            <button>
+                <a href="/cars/search/<%= label.code %>?method=remove">x</a>
+            </button>
+        </div>
         <% }) %>
     <% } %>
    <% content.rows.map((element)=> { %>

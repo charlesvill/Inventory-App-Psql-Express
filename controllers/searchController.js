@@ -35,8 +35,8 @@ async function addFilter(req, res) {
   const tableData = data.tableData;
   //filters need to be passed to query to get labels as well
   const query = await db.selectByFilter(
-    "cars", 
-    tableData, 
+    "cars",
+    tableData,
   );
   const fieldData = await model.fetchFieldData();
 
@@ -48,15 +48,23 @@ async function addFilter(req, res) {
   });
 }
 async function removeFilter(req, res) {
-  
-  const filter = req.params.category;
-  const tableData = model.handleRemoveFilter(filter);
 
-  const query = await db.selectByFilter("cars", tableData);
+  const filter = req.params.category;
+  const data = model.handleRemoveFilter(filter);
+  const tableData = data.tableData;
+
+  if(tableData.length < 1){
+    return getAll(req, res, "cars");
+  }
+
+  const query = await db.selectByFilter(
+    "cars",
+    tableData
+  );
   const fieldData = await model.fetchFieldData();
 
   res.render("search", {
-    page: "results", 
+    page: "results",
     content: query,
     fieldData: fieldData
   });

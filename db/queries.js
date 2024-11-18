@@ -76,6 +76,7 @@ async function insertCarFields(fields) {
     ]);
 }
 async function queryLabels(tableInfo) {
+  console.log("table info in query labels: ", tableInfo);
   let labels = [];
   for (let i = 0; i < tableInfo.length; i++) {
     const element = tableInfo[i];
@@ -83,14 +84,16 @@ async function queryLabels(tableInfo) {
     const column = element.column;
     const value = element.value;
     const id = element.id;
-    const query = `SELECT ${column} AS label FROM ${table} WHERE ${id} = ${value}`;
+    const query = `SELECT ${column} AS label, ${id} FROM ${table} WHERE ${id} = ${value}`;
     console.log("query for label is : ", query);
 
     const { rows } = await pool.query(query);
     console.log("label rows: ", rows);
     const label = rows[0].label;
+    const code = element.table.charAt(0) + rows[0][id];
+    console.log("code for this label is: ", code);
     console.log("current label is: ", label);
-    labels.push(label);
+    labels.push({ label, code });
   }
   return labels;
 }

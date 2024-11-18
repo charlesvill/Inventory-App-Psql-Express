@@ -8,7 +8,7 @@ const tableData = [
       column: 'name',
       id: 'id',
       modelId: 'manufacturer_id',
-      distinct: false
+      distinct: false, 
     }
   },
   {
@@ -96,7 +96,7 @@ const fetchTableData = () => {
       }
       const tableInfo = foundEntry[selector];
 
-      console.log(tableInfo);
+      console.log("tableinfo ", tableInfo);
 
       tableArr.push({
         table: tableInfo.table,
@@ -149,8 +149,8 @@ function handleRemoveFilter(code) {
 
 
   // fetch the table data 
-  const tableArr = fetchTableData();
-  return tableArr;
+  const tableData = fetchTableData();
+  return { tableData, filters };
 }
 
 async function fetchFieldData() {
@@ -176,6 +176,7 @@ async function fetchFieldData() {
         table: table,
         column: column,
         distinct: distinct,
+        code: code,
         rows: [...rows]
       }
     });
