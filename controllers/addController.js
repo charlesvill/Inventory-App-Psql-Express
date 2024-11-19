@@ -2,10 +2,12 @@ const db = require('../db/queries.js');
 
 async function getAddForm(req, res) {
 
+  // may need to refactor db method to be model agnostic
+  // would not work for planes as it stands
   const dropLists = await db.selectDropDownFields();
 
   dropLists.brands.map(element => console.log(element));
-  dropLists.scales.map(element => console.log(element));
+  dropLists.names.map(element => console.log(element));
 // { manufacturer_id: 1, name: 'Kyosho' }
 // { manufacturer_id: 2, name: 'HPI' }
 // { manufacturer_id: 1, name: 'Kyosho' }

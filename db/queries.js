@@ -25,18 +25,20 @@ async function selectTableRows(table, column, id, distinct = false) {
 }
 
 async function selectDropDownFields() {
-  const brands = await pool.query('SELECT manufacturer_id, name FROM manufacturers');
+  const names = await pool.query('SELECT name FROM cars ORDER BY name ASC');
+  const brands = await pool.query('SELECT id, name FROM manufacturers');
   const scales = await pool.query('SELECT id, scale FROM scales');
   const terrains = await pool.query('SELECT id, terrain FROM terrains');
   const powerPlants = await pool.query('SELECT DISTINCT powerplant FROM powerplants');
-  const skillLevels = await pool.query('SELECT DISTINCT skill_level FROM skill_levels');
+  // const skillLevels = await pool.query('SELECT DISTINCT skill_level FROM skill_levels');
 
   return {
+    names: names.rows,
     brands: brands.rows,
     scales: scales.rows,
     terrains: terrains.rows,
     powerplants: powerPlants.rows,
-    skill_levels: skillLevels.rows
+    // skill_levels: skillLevels.rows
   };
 }
 
@@ -46,7 +48,7 @@ async function insertCarFields(fields) {
   // powerplant id
   // scale id
   // terrain id
-  const manId = await pool.query('SELECT manufacturer_id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
+  const manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
   const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
   const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
   const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);

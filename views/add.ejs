@@ -14,17 +14,24 @@
                 <option>RC Car</option>
                 <option>RC Plane</option>
             </select>
-            <input type="text" name="name" id="name" placeholder="name">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="name" list="nameList">
+            <datalist id="nameList">
+                <% data.names.map( name => {%>
+                    <option><%= name.name %></option>
+                <% }); %>
+            </datalist>
             <label for="manufacturer">Brand</label>
-            <select name="manufacturer">
+            <input type="text" name="manufacturer" id="manufacturer" list="manufacturerList" placeholder="Brand">
+            <datalist id="manufacturerList">
                 <% data.brands.map(brand => { %>
                    <option><%= brand.name %></option>
                <% }) %>
-            </select>
+            </datalist>
             <label for="description">Description</label>
             <textarea name="description" id="description" cols="30" rows="10" placeholder="Description or features of the car"></textarea>
             <label for="img_url">Image Url</label>
-            <input type="text" placeholder="Url" name="img_url">
+            <input type="text" placeholder="Url" name="img_url" id="img_url">
             <label for="scale">Scale</label>
             <select name="scale" id="scale">
                 <% data.scales.map(scale => { %>
@@ -43,14 +50,8 @@
                    <option><%= powerplant.powerplant%></option>
                 <% }) %>
             </select>
-            <label for="skill_level">Skill Level</label>
-            <select name="skill_level" id="skill_level">
-                <% data.skill_levels.map(skill_level => { %>
-                   <option><%= skill_level.skill_level%></option>
-                <% }) %>
-            </select>
-            <label for="skill_description">Skill Description</label>
-            <textarea name="skill_description" id="" cols="30" rows="10" placeholder="What makes this the skill selected?"></textarea>
+            <!-- <label for="skill_description">Skill Description</label> -->
+            <!-- <textarea name="skill_description" id="" cols="30" rows="10" placeholder="What makes this the skill selected?"></textarea> -->
             <button type="submit">Submit</button>
         </form>
     </div>
