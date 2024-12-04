@@ -48,7 +48,10 @@ async function insertCarFields(fields) {
   // powerplant id
   // scale id
   // terrain id
+  // for when working with adding new manufacturer, need new procedure. 
+  // either get man Id or just insert 
   const manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
+
   const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
   const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
   const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);
@@ -71,7 +74,7 @@ async function insertCarFields(fields) {
       fields.name,
       fields.description,
       fields.img_url,
-      manId.rows[0].manufacturer_id,
+      manId.rows[0].id,
       powerPlantId.rows[0].id,
       scaleId.rows[0].id,
       terrainId.rows[0].id
@@ -132,12 +135,36 @@ async function selectByFilter(model, tableInfo) {
   return { rows, labels };
 }
 
+async function selectModelByBrand(brand, modelTable, brandTable, column){
 
+  const brandQuery = `
+  SELECT name, id FROM ${brandTable}
+  WHERE name = '${brand}';
+  `
+  const brandRows = await pool.query(brandQuery);
+  if(brandRows.length < 1){
+    return false;
+  }
+  const id = brandRows.rows[0].id;
+
+  // otherwise store the id for the brand
+  const modelQuery = `
+  SELECT ${column} FROM ${modelTable} 
+  WHERE id IN (
+      SELECT id from ${brandTable}
+      WHERE id = ${id}
+    ) 
+  `;
+
+  const { rows } = await pool.query(modelQuery);
+  return rows;
+}
 module.exports = {
   selectAllOfType,
   selectAll,
   selectTableRows,
   selectDropDownFields,
   insertCarFields,
-  selectByFilter
+  selectByFilter,
+  selectModelByBrand
 };

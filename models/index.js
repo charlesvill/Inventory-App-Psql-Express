@@ -188,8 +188,30 @@ async function fetchFieldData() {
   return fetchData;
 }
 
+async function duplicateCheck(modelName, modelBrand, modelType){
+  // conditional branching
+  const modelExists = await db.selectModelByBrand(modelBrand, modelType, "manufacturers", "name");
+  // result parser
+  if(!modelExists || modelExists.length < 1){
+    return false
+  }
+
+  // checks found rows for model name
+  const found = modelExists.find(model => model.name === modelName);
+
+  if(found){
+    return {
+      duplicate: true,
+      modelId: found.id,
+    }
+  } 
+
+  return false;
+}
+
 module.exports = {
   handleSearch,
   handleRemoveFilter,
   fetchFieldData,
+  duplicateCheck,
 };
