@@ -137,7 +137,6 @@ function handleRemoveFilter(code) {
   // check to see that it is present in the filter arr
 
   try {
-
     const newArr = filters.filter(element => element !== code);
     filters = newArr;
     console.log("the filters are: ", filters);
@@ -190,23 +189,25 @@ async function fetchFieldData() {
 
 async function duplicateCheck(modelName, modelBrand, modelType){
   // conditional branching
-  const modelExists = await db.selectModelByBrand(modelBrand, modelType, "manufacturers", "name");
-  // result parser
-  if(!modelExists || modelExists.length < 1){
-    return false
+  const search = await db.selectModelByBrand(modelBrand, modelType, "manufacturers", "name");
+  console.log(search);
+
+  if(!search.modelFound || !search.brandFound){
+    return search;
   }
 
-  // checks found rows for model name
-  const found = modelExists.find(model => model.name === modelName);
+  const found = search.rows.find(model => model.name === modelName);
 
   if(found){
+    console.log("model was found");
     return {
-      duplicate: true,
+      ...search,
       modelId: found.id,
     }
   } 
 
-  return false;
+  console.log("model was found and brand was found but searching rows was not successful");
+  return search;
 }
 
 module.exports = {

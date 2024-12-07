@@ -35,8 +35,8 @@ async function addCar(req, res) {
   } = req.body;
 
 
-  const ableToAdd = await model.duplicateCheck(name, manufacturer, "cars");
-  if (ableToAdd) {
+  const search = await model.duplicateCheck(name, manufacturer, "cars");
+  if (!search.modelFound) {
     db.insertCarFields(
       {
         name,
@@ -56,6 +56,7 @@ async function addCar(req, res) {
     console.log("the model already exists, it should redirect");
     console.dir(ableToAdd[0]);
     res.send("This is a redirect to edit!");
+    // what does it look like to enter the edit mode? do we need to create the individual profile first to end the enter phase?
   }
   // controller will either direct to add the car or edit page
   // model method will return false for add or true for edit

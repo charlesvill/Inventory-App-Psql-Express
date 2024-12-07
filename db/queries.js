@@ -50,8 +50,23 @@ async function insertCarFields(fields) {
   // terrain id
   // for when working with adding new manufacturer, need new procedure. 
   // either get man Id or just insert 
-  const manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
+  // ** this is where I left off
+  // maybe check if there are rows and bounce the adding the id. 
+  // I need to redraw out the passage of data, and how the model queries and 
+  // decides what will be 
+  let manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
+  manId = manId.rows[0].id;
 
+  if(!manId){
+    const {rows} = await pool.query(`INSERT INTO manufacturers (name) VALUES ($1) RETURNING id;`, [fields.manufacturer]);
+    console.log("id of the newly created manufacturer is: ", rows[0].id);
+
+    manId = rows[0].id;
+  }
+
+  console.log(manId);
+
+  
   const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
   const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
   const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);
@@ -62,7 +77,7 @@ async function insertCarFields(fields) {
     description, 
     img_url, 
     manufacturer_id, 
-    powerplant_id, scales_id, 
+    powerplant_id, scale_id, 
     terrain_id
     ) VALUES (
     $1, $2, $3, $4, $5, $6, $7)
@@ -74,7 +89,7 @@ async function insertCarFields(fields) {
       fields.name,
       fields.description,
       fields.img_url,
-      manId.rows[0].id,
+      manId,
       powerPlantId.rows[0].id,
       scaleId.rows[0].id,
       terrainId.rows[0].id
@@ -142,8 +157,13 @@ async function selectModelByBrand(brand, modelTable, brandTable, column){
   WHERE name = '${brand}';
   `
   const brandRows = await pool.query(brandQuery);
-  if(brandRows.length < 1){
-    return false;
+  if(brandRows.rows.length < 1){
+    // false for brand not found
+    return {
+      modelFound: false,
+      brandFound: false,
+      rows: null
+    };
   }
   const id = brandRows.rows[0].id;
 
@@ -157,7 +177,19 @@ async function selectModelByBrand(brand, modelTable, brandTable, column){
   `;
 
   const { rows } = await pool.query(modelQuery);
-  return rows;
+  // should check if the model was found return 
+  if(rows.length < 1){
+    return {
+      modelFound: false,
+      brandFound: true,
+      rows: null
+    };
+  }
+  return {
+    modelFound: true,
+    brandFound: true,
+    rows: rows
+  };
 }
 module.exports = {
   selectAllOfType,
