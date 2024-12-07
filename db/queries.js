@@ -55,18 +55,21 @@ async function insertCarFields(fields) {
   // I need to redraw out the passage of data, and how the model queries and 
   // decides what will be 
   let manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
-  manId = manId.rows[0].id;
 
-  if(!manId){
-    const {rows} = await pool.query(`INSERT INTO manufacturers (name) VALUES ($1) RETURNING id;`, [fields.manufacturer]);
+  console.log(manId);
+
+  if (manId.rows.length < 1) {
+    const { rows } = await pool.query(`INSERT INTO manufacturers (name) VALUES ($1) RETURNING id;`, [fields.manufacturer]);
     console.log("id of the newly created manufacturer is: ", rows[0].id);
 
     manId = rows[0].id;
+  } else {
+    manId = manId.rows[0].id;
   }
 
   console.log(manId);
 
-  
+
   const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
   const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
   const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);
@@ -150,14 +153,14 @@ async function selectByFilter(model, tableInfo) {
   return { rows, labels };
 }
 
-async function selectModelByBrand(brand, modelTable, brandTable, column){
+async function selectModelByBrand(brand, modelTable, brandTable, column) {
 
   const brandQuery = `
   SELECT name, id FROM ${brandTable}
   WHERE name = '${brand}';
   `
   const brandRows = await pool.query(brandQuery);
-  if(brandRows.rows.length < 1){
+  if (brandRows.rows.length < 1) {
     // false for brand not found
     return {
       modelFound: false,
@@ -178,7 +181,7 @@ async function selectModelByBrand(brand, modelTable, brandTable, column){
 
   const { rows } = await pool.query(modelQuery);
   // should check if the model was found return 
-  if(rows.length < 1){
+  if (rows.length < 1) {
     return {
       modelFound: false,
       brandFound: true,
