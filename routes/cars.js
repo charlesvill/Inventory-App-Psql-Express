@@ -1,8 +1,9 @@
 const { Router } = require("express");
 const searchController = require("../controllers/searchController.js");
+const carController = require("../controllers/carController.js");
 const carRouter = Router();
 
-const searchValidator = (req, res, next) => {
+const filterValidator = (req, res, next) => {
   const value = Number(req.params.category.slice(1));
   console.log('value is', value);
   if (isNaN(value)) {
@@ -13,7 +14,9 @@ const searchValidator = (req, res, next) => {
   }
 }
 
-const searchMethodMW = (req, res, next) => {
+
+
+const removeFilterMW = (req, res, next) => {
   const { method } = req.query;
 
   if (!method) {
@@ -29,7 +32,7 @@ const searchMethodMW = (req, res, next) => {
   }
 }
 
-const fetchResMW = (req, res, next) => {
+const addFilterMW = (req, res, next) => {
   searchController.addFilter(req, res);
 }
 
@@ -39,6 +42,29 @@ const errHandler = (err, req, res, next) => {
     "404", {
     err: err
   });
+}
+
+const IDValidator = (req, res, next) => {
+  const value = Number(req.params.category.slice(1));
+  console.log('value is', value);
+  if (isNaN(value)) {
+    console.log("there should be an error triggering")
+    throw new Error("Invalid search parameter");
+  } else {
+    next();
+  }
+}
+
+const editMW = (req,res, next) => {
+
+}
+
+const publishEditsMW = (req, res, next) => {
+
+}
+
+const profileMW = (req, res, next) => {
+
 }
 
 //
@@ -52,13 +78,37 @@ carRouter.get("/", (req, res) => {
 // route for searching
 carRouter.get(
   "/search/:category",
-  searchValidator,
-  searchMethodMW,
-  fetchResMW,
+  filterValidator,
+  removeFilterMW,
+  addFilterMW,
   errHandler
 );
-// separate path for the search bar queries because 
 
+
+// router for /car/edit/id
+// with ID pull the fields pull form, set value to db fields 
+// the post will run update statements in the db 
+//
+// 1. routing
+// 2. controller sends id to get db rows
+// 3. requests the ejs form and passes the data 
+
+carRouter.get(
+  "/edit/:id", 
+  IDValidator,
+  editMW,
+  errHandler
+);
+
+// router for post method on /edit/:id
+carRouter.post(
+  "/edit:id",
+  IDValidator,
+  publishEditsMW,
+  errHandler
+);
+
+// router for /car/profile/id
 
 module.exports = carRouter;
 

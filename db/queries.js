@@ -1,4 +1,5 @@
 const pool = require("./pool.js");
+const model = require("../models/index.js");
 
 async function selectAllOfType(category) {
   const { rows } = await pool.query(
@@ -127,7 +128,7 @@ async function selectByFilter(model, tableInfo) {
   const firstFilter = tableData.shift();
   const baseQuery = `
   SELECT ${firstFilter.table}.${firstFilter.column} AS label,   
-  cars.name,
+  ${model}.name,
   ${model}.description,
   ${model}.img_url
   FROM ${model} 
@@ -194,6 +195,65 @@ async function selectModelByBrand(brand, modelTable, brandTable, column) {
     rows: rows
   };
 }
+
+
+async function queryModelFieldsById(modelType, id) {
+  // Query the main table to get the row by id
+  const { rows } = await pool.query(`SELECT * FROM ${modelType} WHERE id = $1`, [id]);
+  const allColumns = rows[0];
+
+  console.dir("all columns: ", allColumns);
+  if (!allColumns) {
+    throw new Error(`No record found for ${modelType} with id ${id}`);
+  }
+
+  // Create an array of keys ending in "_id"
+  const keysEndingWithId = Object.keys(allColumns).filter(key => key.endsWith("_id"));
+  console.log("array of id keys: ", keysEndingWithId);
+
+  // Map over the keys and construct a promise for each query
+  const promises = keysEndingWithId.map(async (key) => {
+    const tableCode = key.charAt(0); // Get the table code (assumes first character indicates the table)
+    const tableData = model.dataByCode(tableCode); // Map the code to the corresponding table
+
+    console.log("current key:", key);
+    console.log("tableCode:", tableCode);
+    console.log("tableData:", tableData);
+
+    // Build the query statement dynamically
+    const queryStatement = `
+      SELECT * FROM ${tableData.table}
+      WHERE id = $1
+    `;
+    console.log("the current table statement", queryStatement);
+
+    console.log("id number ", allColumns[key]);
+    const { rows: keyRows } = await pool.query(queryStatement, [allColumns[key]]);
+    return { [key]: keyRows[0] }; // Return an object with the key and its value
+  });
+
+  // Use Promise.all to resolve all the promises in parallel
+  const results = await Promise.all(promises);
+
+  // Merge all the resulting objects into a single object
+  const fieldsObj = results.reduce((acc, obj) => {
+    return { ...acc, ...obj };
+  }, {});
+
+  console.log("fieldsObj:", fieldsObj);
+  return fieldsObj;
+}
+
+
+async function example() {
+  const test = await queryModelFieldsById("cars", 8);
+  setTimeout(async () => {
+    console.dir("test results: ", test);
+  }, 2000);
+}
+
+example();
+
 module.exports = {
   selectAllOfType,
   selectAll,

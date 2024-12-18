@@ -8,7 +8,7 @@ const tableData = [
       column: 'name',
       id: 'id',
       modelId: 'manufacturer_id',
-      distinct: false, 
+      distinct: false,
     }
   },
   {
@@ -80,23 +80,28 @@ function filterArrAdjust(code) {
   filters.push(code);
 }
 
+function dataByCode(code) {
+  const foundEntry = tableData.find(
+    element => element.hasOwnProperty(code)
+  );
+  if (!foundEntry) {
+    throw new Error(
+      `could not match code selector with a table! code: ${code}`
+    );
+  }
+  const tableInfo = foundEntry[code];
+
+  return tableInfo;
+}
+
 const fetchTableData = () => {
   let tableArr = [];
   filters.forEach((filter) => {
     const selector = filter.charAt(0);
     const value = filter.slice(1);
     try {
-      const foundEntry = tableData.find(
-        element => element.hasOwnProperty(selector)
-      );
-      if (!foundEntry) {
-        throw new Error(
-          `could not match code selector with a table! code: ${filter.code}`
-        );
-      }
-      const tableInfo = foundEntry[selector];
 
-      console.log("tableinfo ", tableInfo);
+      const tableInfo = dataByCode(selector);
 
       tableArr.push({
         table: tableInfo.table,
@@ -127,10 +132,10 @@ function handleSearch(code) {
     console.log('filter ', index, ' ', filter)
   });
 
-  const tableData= fetchTableData();
+  const tableData = fetchTableData();
 
   console.log(tableData);
-  return {tableData, filters};
+  return { tableData, filters };
 }
 
 function handleRemoveFilter(code) {
@@ -187,32 +192,35 @@ async function fetchFieldData() {
   return fetchData;
 }
 
-async function duplicateCheck(modelName, modelBrand, modelType){
+async function duplicateCheck(modelName, modelBrand, modelType) {
   // conditional branching
   const search = await db.selectModelByBrand(modelBrand, modelType, "manufacturers", "name");
   console.log(search);
 
-  if(!search.modelFound || !search.brandFound){
+  if (!search.modelFound || !search.brandFound) {
     return search;
   }
 
   const found = search.rows.find(model => model.name === modelName);
 
-  if(found){
+  if (found) {
     console.log("model was found");
     return {
       ...search,
       modelId: found.id,
     }
-  } 
+  }
 
   console.log("model was found and brand was found but searching rows was not successful");
   return search;
 }
 
+
+
 module.exports = {
   handleSearch,
   handleRemoveFilter,
+  dataByCode,
   fetchFieldData,
   duplicateCheck,
 };
