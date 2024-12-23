@@ -57,7 +57,6 @@ async function insertCarFields(fields) {
   // decides what will be 
   let manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
 
-  console.log(manId);
 
   if (manId.rows.length < 1) {
     const { rows } = await pool.query(`INSERT INTO manufacturers (name) VALUES ($1) RETURNING id;`, [fields.manufacturer]);
@@ -68,13 +67,11 @@ async function insertCarFields(fields) {
     manId = manId.rows[0].id;
   }
 
-  console.log(manId);
 
 
   const powerPlantId = await pool.query('SELECT id from powerplants WHERE powerplant = ($1)', [fields.powerplant]);
   const scaleId = await pool.query('SELECT id from scales WHERE scale = ($1)', [fields.scale]);
   const terrainId = await pool.query('SELECT id from terrains WHERE terrain = ($1)', [fields.terrain]);
-  console.log("the terrain id is: ", terrainId.rows);
 
   const carQuery = `INSERT INTO cars (
     name, 
@@ -99,6 +96,7 @@ async function insertCarFields(fields) {
       terrainId.rows[0].id
     ]);
 }
+
 async function queryLabels(tableInfo) {
   console.log("table info in query labels: ", tableInfo);
   let labels = [];
@@ -121,7 +119,9 @@ async function queryLabels(tableInfo) {
   }
   return labels;
 }
+
 // this is going to be an array of table info
+
 async function selectByFilter(model, tableInfo) {
   const tableData = tableInfo;
   const labels = await queryLabels(tableInfo);
@@ -215,6 +215,7 @@ async function queryModelFieldsById(modelType, id) {
   const promises = keysEndingWithId.map(async (key) => {
     const tableCode = key.charAt(0); // Get the table code (assumes first character indicates the table)
     const tableData = model.dataByCode(tableCode); // Map the code to the corresponding table
+    const keyName = key.replace("_id", "");
 
     console.log("current key:", key);
     console.log("tableCode:", tableCode);
@@ -229,7 +230,7 @@ async function queryModelFieldsById(modelType, id) {
 
     console.log("id number ", allColumns[key]);
     const { rows: keyRows } = await pool.query(queryStatement, [allColumns[key]]);
-    return { [key]: keyRows[0] }; // Return an object with the key and its value
+    return { [keyName]: keyRows[0] }; // Return an object with the key and its value
   });
 
   // Use Promise.all to resolve all the promises in parallel
@@ -238,7 +239,7 @@ async function queryModelFieldsById(modelType, id) {
   // Merge all the resulting objects into a single object
   const fieldsObj = results.reduce((acc, obj) => {
     return { ...acc, ...obj };
-  }, {});
+  }, allColumns);
 
   console.log("fieldsObj:", fieldsObj);
   return fieldsObj;
@@ -261,5 +262,6 @@ module.exports = {
   selectDropDownFields,
   insertCarFields,
   selectByFilter,
-  selectModelByBrand
+  selectModelByBrand, 
+  queryModelFieldsById
 };

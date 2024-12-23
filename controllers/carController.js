@@ -1,13 +1,20 @@
 const db = require("../db/queries.js");
 const model = require("../models/index.js");
 
-
 // edit controller
 async function editModel(req, res) {
   // get all the fields
-  const fields = db.
+  //
+  // const fields = db.
+  const fields = await db.queryModelFieldsById();
+  console.log("fields ", fields);
   // get form
+
   // respond w/ data passed through
+  res.render("edit", {
+    data: fields,
+  });
+
 }
 
 // publish edits controller

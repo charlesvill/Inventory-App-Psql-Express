@@ -151,7 +151,6 @@ function handleRemoveFilter(code) {
     return;
   }
 
-
   // fetch the table data 
   const tableData = fetchTableData();
   return { tableData, filters };

@@ -16,7 +16,7 @@ async function getAddForm(req, res) {
 
 
   res.render("add", {
-    data: dropLists
+    data: dropLists,
   });
 }
 

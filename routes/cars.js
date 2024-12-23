@@ -57,6 +57,8 @@ const IDValidator = (req, res, next) => {
 
 const editMW = (req,res, next) => {
 
+  //this will pass the req, res to car controller
+  carController.editModel(req, res);
 }
 
 const publishEditsMW = (req, res, next) => {
@@ -102,7 +104,7 @@ carRouter.get(
 
 // router for post method on /edit/:id
 carRouter.post(
-  "/edit:id",
+  "/edit/:id",
   IDValidator,
   publishEditsMW,
   errHandler
