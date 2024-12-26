@@ -80,6 +80,8 @@ function filterArrAdjust(code) {
   filters.push(code);
 }
 
+
+
 function dataByCode(code) {
   const foundEntry = tableData.find(
     element => element.hasOwnProperty(code)
@@ -214,7 +216,38 @@ async function duplicateCheck(modelName, modelBrand, modelType) {
   return search;
 }
 
+async function modelDataById(modelType, id) {
+  // get all columns from db by model id
+  const allColumns = await db.selectFromModelId(modelType, id);
 
+  // create the array of keys ending in "_id"
+  const keysEndingWithId = Object.keys(allColumns).filter(key => key.endsWith("_id"));
+  console.log("array of id keys: ", keysEndingWithId);
+
+  // reduce over the keys and create a promise for each query or create a large join statement 
+
+
+  const baseStatement = `SELECT * FROM ${modelType}`;
+
+  const joinStatement = keysEndingWithId.reduce((acc, key) => {
+
+    //gives the name of the table
+    const tableName = dataByCode(key.charAt(0)).table;
+
+    const newJoin = `JOIN ${tableName} ON ${modelType}.${key} = ${tableName}.id`;
+
+    return acc + " " + newJoin;
+  }, baseStatement);
+
+  const finalStatement = joinStatement + ` WHERE ${modelType}.id = $1`;
+
+  console.log("final query statement for model: ", finalStatement);
+
+  // use db to query the final statement and return the result or return the query statement
+  // adn use the controller that called this method to call the db. 
+}
+
+modelDataById("cars", 8);
 
 module.exports = {
   handleSearch,

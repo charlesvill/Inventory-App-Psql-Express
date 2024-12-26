@@ -12,40 +12,30 @@
         <form action="/edit/<%= data.id %>" method="post">
 
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="    " list="nameList">
-            <datalist id="nameList">
-                <% data.names.map( name => {%>
-                    <option><%= name.name %></option>
-                <% }); %>
-            </datalist>
+            <input type="text" name="name" id="name" value="<%= data.name%>" list="nameList">
             <label for="manufacturer">Brand</label>
-            <input type="text" name="manufacturer" id="manufacturer" list="manufacturerList" placeholder="Brand">
-            <datalist id="manufacturerList">
-                <% data.brands.map(brand => { %>
-                   <option><%= brand.name %></option>
-               <% }) %>
-            </datalist>
+            <input type="text" name="manufacturer" id="manufacturer" value="<%= data.manufacturer.name%>" list="manufacturerList" placeholder="Brand">
             <label for="description">Description</label>
-            <textarea name="description" id="description" cols="30" rows="10" placeholder="Description or features of the car"></textarea>
+            <textarea name="description" id="description" cols="30" rows="10" value="<%= data.description%>"></textarea>
             <label for="img_url">Image Url</label>
-            <input type="text" placeholder="Url" name="img_url" id="img_url">
+            <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.img_url%>">
             <label for="scale">Scale</label>
             <select name="scale" id="scale">
-                <% data.scales.map(scale => { %>
-                   <option><%= scale.scale %></option>
-               <% }) %>
+                <%// data.scales.map(scale => { %>
+                   <option><%=// scale.scale %></option>
+               <% //}) %>
             </select>
             <label for="terrain">Terrain</label>
             <select name="terrain" id="terrain">
-                <% data.terrains.map(terrain => { %>
-                   <option><%= terrain.terrain %></option>
-                <% }) %>
+                <% //data.terrains.map(terrain => { %>
+                   <option><%= //terrain.terrain %></option>
+                <% //}) %>
             </select>
             <label for="powerplant">Power Plant</label>
             <select name="powerplant" id="powerplant">
-                <% data.powerplants.map(powerplant => { %>
-                   <option><%= powerplant.powerplant%></option>
-                <% }) %>
+                <% //data.powerplants.map(powerplant => { %>
+                   <option><%= //powerplant.powerplant%></option>
+                <% //}) %>
             </select>
             <!-- <label for="skill_description">Skill Description</label> -->
             <!-- <textarea name="skill_description" id="" cols="30" rows="10" placeholder="What makes this the skill selected?"></textarea> -->
