@@ -249,8 +249,8 @@ async function modelDataById(modelType, id) {
   const extraTables = query[0];
 
   return { 
-    baseTable: {...allColumns},
-    relatedTables: {...extraTables} 
+    model: {...allColumns},
+    related: {...extraTables} 
   }
 }
 

@@ -12,13 +12,13 @@
         <form action="/edit/<%= data.id %>" method="post">
 
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="<%= data.name%>" list="nameList">
+            <input type="text" name="name" id="name" value="<%= data.model.name%>" list="nameList">
             <label for="manufacturer">Brand</label>
-            <input type="text" name="manufacturer" id="manufacturer" value="<%= data.manufacturer.name%>" list="manufacturerList" placeholder="Brand">
+            <input type="text" name="manufacturer" id="manufacturer" value="<%= data.related.name%>" list="manufacturerList" placeholder="Brand">
             <label for="description">Description</label>
-            <textarea name="description" id="description" cols="30" rows="10" value="<%= data.description%>"></textarea>
+            <textarea name="description" id="description" cols="30" rows="10" ><%= data.model.description%></textarea>
             <label for="img_url">Image Url</label>
-            <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.img_url%>">
+            <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.model.img_url%>">
             <label for="scale">Scale</label>
             <select name="scale" id="scale">
                 <%// data.scales.map(scale => { %>
