@@ -45,7 +45,7 @@ const errHandler = (err, req, res, next) => {
 }
 
 const IDValidator = (req, res, next) => {
-  const value = Number(req.params.category.slice(1));
+  const value = Number(req.params.id.slice(1));
   console.log('value is', value);
   if (isNaN(value)) {
     console.log("there should be an error triggering")

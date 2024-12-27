@@ -207,7 +207,12 @@ async function selectFromModelId(modelType, id) {
   return columns;
 }
 
+async function queryByStatement(statement, ...qParams){
 
+  const {rows} = await pool.query(statement, [...qParams]);
+
+  return rows;
+}
 
 module.exports = {
   selectAllOfType,
@@ -218,4 +223,5 @@ module.exports = {
   selectByFilter,
   selectModelByBrand,
   selectFromModelId,
+  queryByStatement,
 };

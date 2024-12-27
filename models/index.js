@@ -219,32 +219,39 @@ async function duplicateCheck(modelName, modelBrand, modelType) {
 async function modelDataById(modelType, id) {
   // get all columns from db by model id
   const allColumns = await db.selectFromModelId(modelType, id);
-
-  // create the array of keys ending in "_id"
   const keysEndingWithId = Object.keys(allColumns).filter(key => key.endsWith("_id"));
-  console.log("array of id keys: ", keysEndingWithId);
+  // select statements map keys ending with id using column as selector alias as fieldname
 
-  // reduce over the keys and create a promise for each query or create a large join statement 
+  
+  const selectArr = keysEndingWithId.map((key, index) => {
+    const tableData = dataByCode(key.charAt(0));
+    let string = index === 0 ? "SELECT " : "";
 
+    return string + `${tableData.table}.${tableData.column}`;
+  });
 
-  const baseStatement = `SELECT * FROM ${modelType}`;
+  const selectStatement = selectArr.join(", ");
 
   const joinStatement = keysEndingWithId.reduce((acc, key) => {
-
     //gives the name of the table
-    const tableName = dataByCode(key.charAt(0)).table;
+    const tableData = dataByCode(key.charAt(0));
 
-    const newJoin = `JOIN ${tableName} ON ${modelType}.${key} = ${tableName}.id`;
+    const newJoin = `JOIN ${tableData.table} ON ${modelType}.${key} = ${tableData.table}.id`;
 
     return acc + " " + newJoin;
-  }, baseStatement);
+  }, ` FROM ${modelType} `);
 
-  const finalStatement = joinStatement + ` WHERE ${modelType}.id = $1`;
+  const finalStatement = selectStatement + joinStatement + ` WHERE ${modelType}.id = $1`;
 
   console.log("final query statement for model: ", finalStatement);
 
-  // use db to query the final statement and return the result or return the query statement
-  // adn use the controller that called this method to call the db. 
+  const query = await db.queryByStatement(finalStatement, id);
+  const extraTables = query[0];
+
+  return { 
+    baseTable: {...allColumns},
+    relatedTables: {...extraTables} 
+  }
 }
 
 modelDataById("cars", 8);
@@ -255,4 +262,5 @@ module.exports = {
   dataByCode,
   fetchFieldData,
   duplicateCheck,
+  modelDataById,
 };

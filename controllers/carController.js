@@ -3,14 +3,12 @@ const model = require("../models/index.js");
 
 // edit controller
 async function editModel(req, res) {
-  // get all the fields
-  //
-  // const fields = db.
-  const fields = await db.queryModelFieldsById();
-  console.log("fields ", fields);
-  // get form
+  const id = req.params.id;
 
-  // respond w/ data passed through
+  const fields = await model.modelDataById("cars", id);
+  console.log("fields being sent: ", fields);
+
+
   res.render("edit", {
     data: fields,
   });

@@ -27,7 +27,9 @@ async function getByType(req, res) {
     fieldData: fieldData
   });
 }
+
 let filterArr = [];
+
 async function addFilter(req, res) {
   const searchCode = req.params.category;
 
@@ -47,6 +49,7 @@ async function addFilter(req, res) {
     fieldData: fieldData
   });
 }
+
 async function removeFilter(req, res) {
 
   const filter = req.params.category;
