@@ -15,27 +15,32 @@
             <input type="text" name="name" id="name" value="<%= data.model.name%>" list="nameList">
             <label for="manufacturer">Brand</label>
             <input type="text" name="manufacturer" id="manufacturer" value="<%= data.related.name%>" list="manufacturerList" placeholder="Brand">
+            <datalist id="manufacturerList">
+                <% dropDown.brands.map(brand => { %>
+                   <option><%= brand.name %></option>
+               <% }) %>
+            </datalist>
             <label for="description">Description</label>
             <textarea name="description" id="description" cols="30" rows="10" ><%= data.model.description%></textarea>
             <label for="img_url">Image Url</label>
             <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.model.img_url%>">
             <label for="scale">Scale</label>
             <select name="scale" id="scale">
-                <%// data.scales.map(scale => { %>
-                   <option><%=// scale.scale %></option>
-               <% //}) %>
+                <% dropDown.scales.map(scale => { %>
+                   <option><%= scale.scale %></option>
+               <% }) %>
             </select>
             <label for="terrain">Terrain</label>
             <select name="terrain" id="terrain">
-                <% //data.terrains.map(terrain => { %>
-                   <option><%= //terrain.terrain %></option>
-                <% //}) %>
+                <% dropDown.terrains.map(terrain => { %>
+                   <option><%= terrain.terrain %></option>
+                <% }) %>
             </select>
             <label for="powerplant">Power Plant</label>
             <select name="powerplant" id="powerplant">
-                <% //data.powerplants.map(powerplant => { %>
-                   <option><%= //powerplant.powerplant%></option>
-                <% //}) %>
+                <% dropDown.powerplants.map(powerplant => { %>
+                   <option><%= powerplant.powerplant%></option>
+                <% }) %>
             </select>
             <!-- <label for="skill_description">Skill Description</label> -->
             <!-- <textarea name="skill_description" id="" cols="30" rows="10" placeholder="What makes this the skill selected?"></textarea> -->

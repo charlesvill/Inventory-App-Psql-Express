@@ -14,7 +14,6 @@ async function getAddForm(req, res) {
   // { manufacturer_id: 1, name: 'Kyosho' }
   // { manufacturer_id: 2, name: 'HPI' }
 
-
   res.render("add", {
     data: dropLists,
   });
