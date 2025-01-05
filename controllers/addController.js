@@ -29,8 +29,6 @@ async function addCar(req, res) {
     scale,
     terrain,
     powerplant,
-    skill_level,
-    skill_description
   } = req.body;
 
 

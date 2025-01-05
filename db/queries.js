@@ -44,19 +44,10 @@ async function selectDropDownFields() {
 
 async function insertCarFields(fields) {
   console.log(fields);
-  // man id
-  // powerplant id
-  // scale id
-  // terrain id
-  // for when working with adding new manufacturer, need new procedure. 
-  // either get man Id or just insert 
-  // ** this is where I left off
-  // maybe check if there are rows and bounce the adding the id. 
-  // I need to redraw out the passage of data, and how the model queries and 
-  // decides what will be 
   let manId = await pool.query('SELECT id FROM manufacturers WHERE name = ($1)', [fields.manufacturer]);
 
 
+  // insert new manufacturer if not existent and return newly created man id 
   if (manId.rows.length < 1) {
     const { rows } = await pool.query(`INSERT INTO manufacturers (name) VALUES ($1) RETURNING id;`, [fields.manufacturer]);
     console.log("id of the newly created manufacturer is: ", rows[0].id);
@@ -207,11 +198,26 @@ async function selectFromModelId(modelType, id) {
   return columns;
 }
 
-async function queryByStatement(statement, ...qParams){
+async function queryByStatement(statement, ...qParams) {
 
-  const {rows} = await pool.query(statement, [...qParams]);
+  const { rows } = await pool.query(statement, [...qParams]);
 
   return rows;
+}
+
+// UPDATE cars
+// terrain_id = (
+// SELECT id FROM terrains
+// WHERE terrain = 'Off-Road Racing'
+// )
+// WHERE id = 1;
+
+async function updateModel(modelType, column, fields) {
+  // need the table name for each field being updated
+  const exQuery = `
+  UPDATE ${modelType}
+  SET ${column} = 
+`
 }
 
 module.exports = {

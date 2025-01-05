@@ -20,11 +20,20 @@ async function editModel(req, res) {
 
 // publish edits controller
 async function publishEdits(req, res) {
-  // get all the fields from name
-  // pass through mw to check for duplicates
-  // send back to the edits if its the same
+  // get all the fields req.body
+  const {
+    name,
+    manufacturer,
+    description,
+    img_url,
+    scale,
+    terrain,
+    powerplant,
+  } = req.body;
+
+  const id = req.params.id;
   // reference db queries method to post chnages, pass data
-  // reroute to select all
+  //reroute to model profile
 }
 
 // profile controller

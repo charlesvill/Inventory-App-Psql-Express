@@ -216,13 +216,15 @@ async function duplicateCheck(modelName, modelBrand, modelType) {
   return search;
 }
 
+
+
 async function modelDataById(modelType, id) {
   // get all columns from db by model id
   const allColumns = await db.selectFromModelId(modelType, id);
   const keysEndingWithId = Object.keys(allColumns).filter(key => key.endsWith("_id"));
   // select statements map keys ending with id using column as selector alias as fieldname
 
-  
+
   const selectArr = keysEndingWithId.map((key, index) => {
     const tableData = dataByCode(key.charAt(0));
     let string = index === 0 ? "SELECT " : "";
@@ -248,13 +250,70 @@ async function modelDataById(modelType, id) {
   const query = await db.queryByStatement(finalStatement, id);
   const extraTables = query[0];
 
-  return { 
-    model: {...allColumns},
-    related: {...extraTables} 
+  return {
+    model: { ...allColumns },
+    related: { ...extraTables }
   }
 }
 
-modelDataById("cars", 8);
+// alternatively, the parameter obj already has the keys that are the column names 
+
+// UPDATE cars
+// terrain_id = (
+// SELECT id FROM terrains
+// WHERE terrain = 'Off-Road Racing'
+// )
+// name = neo 3.0,
+// manufacturer_id
+// WHERE id = 1;
+
+
+function publishUpdates(modelType, modelId, modelTableFields, auxTables) {
+  // create array of aux table keys
+  // create array of modeltablefield keys
+  // initialize a base statement
+
+  const modelTableKeys = Object.keys(modelTableFields);
+  const auxTableKeys = Object.keys(auxTables);
+  const base = `UPDATE ${modelType} `;
+
+  const modelStatement = modelTableKeys.map((key, index) => {
+    return `${index === 0 ? "SET" : ""} ${key} = ${modelTableFields[key]}`;
+  });
+  const joinedMdlStment = modelStatement.join(", ");
+
+  const auxTableStatement = auxTableKeys.map((key) => {
+    const tableCode = key.charAt(0);
+    const tableData = dataByCode(tableCode);
+    return `${key} = (SELECT id FROM ${tableData.table} WHERE ${tableData.column} = ${auxTables[key]})`;
+  });
+  const joinedAuxStment = auxTableStatement.join(", ");
+
+  const conditionalStatement = ` WHERE id = ${modelId}`
+  const finalStatement = base + joinedMdlStment + ", " + joinedAuxStment + conditionalStatement;
+  console.log("The update statement so far: ", finalStatement);
+
+  // reduce the aux tables into the update statement
+  // join any beginning, middle and end statements
+  // pass the query through db
+  // return rows which should have the result of the query
+}
+
+publishUpdates(
+  "cars", 
+  1,
+  {
+    name: "Neo 3.0",
+    img_url: "https://url.com",
+    description: "this is an example",
+  },
+  {
+    manufacturer_id: "Kyosho",
+    terrain_id: "Off-Road Racing",
+    scale_id: "1:10",
+  }
+);
+
 
 module.exports = {
   handleSearch,
