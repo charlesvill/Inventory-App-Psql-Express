@@ -25,21 +25,21 @@
             <label for="img_url">Image Url</label>
             <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.model.img_url%>">
             <label for="scale_id">Scale</label>
-            <select name="scale_id" id="scale">
+            <select name="scale_id" id="scale" value="<%= data.related.scale %>">
                 <% dropDown.scales.map(scale => { %>
-                   <option><%= scale.scale %></option>
+                   <option <%=scale.scale === data.related.scale ? "selected" : "" %> ><%= scale.scale %></option>
                <% }) %>
             </select>
             <label for="terrain_id">Terrain</label>
-            <select name="terrain_id" id="terrain">
+            <select name="terrain_id" id="terrain" value="<%= data.related.terrain %>">
                 <% dropDown.terrains.map(terrain => { %>
-                   <option><%= terrain.terrain %></option>
+                   <option <%=terrain.terrain === data.related.terrain ? "selected" : "" %> ><%= terrain.terrain %></option>
                 <% }) %>
             </select>
             <label for="powerplant_id">Power Plant</label>
-            <select name="powerplant_id" id="powerplant">
+            <select name="powerplant_id" id="powerplant" value="<%= data.related.powerplant%>">
                 <% dropDown.powerplants.map(powerplant => { %>
-                   <option><%= powerplant.powerplant%></option>
+                   <option <%=powerplant.powerplant === data.related.powerplant ? "selected" : "" %> ><%= powerplant.powerplant%></option>
                 <% }) %>
             </select>
             <!-- <label for="skill_description">Skill Description</label> -->
