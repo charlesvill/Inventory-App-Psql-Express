@@ -8,7 +8,7 @@ async function editModel(req, res) {
   const fields = await model.modelDataById("cars", id);
   const dropDownFields = await db.selectDropDownFields();
 
-  console.log("fields being sent: ", fields);
+  // console.log("fields being sent: ", fields);
 
 
   res.render("edit", {
@@ -23,17 +23,36 @@ async function publishEdits(req, res) {
   // get all the fields req.body
   const {
     name,
-    manufacturer,
+    manufacturer_id,
     description,
     img_url,
-    scale,
-    terrain,
-    powerplant,
+    scale_id,
+    terrain_id,
+    powerplant_id,
   } = req.body;
 
+  console.log("the publish edits controller is being activated");
+
   const id = req.params.id;
-  // reference db queries method to post chnages, pass data
-  //reroute to model profile
+  const updateData = model.genUpdateStatement(
+    "cars",
+    id,
+    {
+      name,
+      description,
+      img_url,
+    },
+    {
+      manufacturer_id,
+      scale_id,
+      terrain_id,
+      powerplant_id
+    }
+  );
+  console.log(updateData);
+  
+  const dbResults = await db.queryByStatement(updateData.statement, ...updateData.valuesArray);
+  console.log("db results for update", dbResults);
 }
 
 // profile controller

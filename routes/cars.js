@@ -56,13 +56,11 @@ const IDValidator = (req, res, next) => {
 }
 
 const editMW = (req,res, next) => {
-
-  //this will pass the req, res to car controller
   carController.editModel(req, res);
 }
 
 const publishEditsMW = (req, res, next) => {
-
+  carController.publishEdits(req, res);
 }
 
 const profileMW = (req, res, next) => {
@@ -109,6 +107,7 @@ carRouter.post(
   publishEditsMW,
   errHandler
 );
+
 
 // router for /car/profile/id
 

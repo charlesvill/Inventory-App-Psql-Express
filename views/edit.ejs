@@ -9,12 +9,12 @@
 </header>
 <main>
     <div>
-        <form action="/edit/<%= data.id %>" method="post">
+        <form action="/cars/edit/<%= data.model.id %>" method="post">
 
             <label for="name">Name</label>
             <input type="text" name="name" id="name" value="<%= data.model.name%>" list="nameList">
-            <label for="manufacturer">Brand</label>
-            <input type="text" name="manufacturer" id="manufacturer" value="<%= data.related.name%>" list="manufacturerList" placeholder="Brand">
+            <label for="manufacturer_id">Brand</label>
+            <input type="text" name="manufacturer_id" id="manufacturer" value="<%= data.related.name%>" list="manufacturerList" placeholder="Brand">
             <datalist id="manufacturerList">
                 <% dropDown.brands.map(brand => { %>
                    <option><%= brand.name %></option>
@@ -24,20 +24,20 @@
             <textarea name="description" id="description" cols="30" rows="10" ><%= data.model.description%></textarea>
             <label for="img_url">Image Url</label>
             <input type="text" placeholder="Url" name="img_url" id="img_url" value="<%=data.model.img_url%>">
-            <label for="scale">Scale</label>
-            <select name="scale" id="scale">
+            <label for="scale_id">Scale</label>
+            <select name="scale_id" id="scale">
                 <% dropDown.scales.map(scale => { %>
                    <option><%= scale.scale %></option>
                <% }) %>
             </select>
-            <label for="terrain">Terrain</label>
-            <select name="terrain" id="terrain">
+            <label for="terrain_id">Terrain</label>
+            <select name="terrain_id" id="terrain">
                 <% dropDown.terrains.map(terrain => { %>
                    <option><%= terrain.terrain %></option>
                 <% }) %>
             </select>
-            <label for="powerplant">Power Plant</label>
-            <select name="powerplant" id="powerplant">
+            <label for="powerplant_id">Power Plant</label>
+            <select name="powerplant_id" id="powerplant">
                 <% dropDown.powerplants.map(powerplant => { %>
                    <option><%= powerplant.powerplant%></option>
                 <% }) %>

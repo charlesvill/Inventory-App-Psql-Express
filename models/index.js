@@ -267,52 +267,49 @@ async function modelDataById(modelType, id) {
 // manufacturer_id
 // WHERE id = 1;
 
-
-function publishUpdates(modelType, modelId, modelTableFields, auxTables) {
+function genUpdateStatement(modelType, modelId, modelTableFields, auxTables) {
   // create array of aux table keys
   // create array of modeltablefield keys
-  // initialize a base statement
+  // create update statement based on fields that only update model table values
+  // and fields that need a nested query to update an id based on a given value
+  // values are counted and stored separately for the purpose of placeholder values in the statement
 
   const modelTableKeys = Object.keys(modelTableFields);
   const auxTableKeys = Object.keys(auxTables);
   const base = `UPDATE ${modelType} `;
+  let valueCount = 1;
+  let valuesArr = [];
 
   const modelStatement = modelTableKeys.map((key, index) => {
-    return `${index === 0 ? "SET" : ""} ${key} = ${modelTableFields[key]}`;
+    const statementFrag = `${index === 0 ? "SET" : ""} ${key} = $${valueCount}`;
+    valueCount += 1;
+    valuesArr.push(modelTableFields[key]);
+
+    return statementFrag;
   });
   const joinedMdlStment = modelStatement.join(", ");
 
   const auxTableStatement = auxTableKeys.map((key) => {
     const tableCode = key.charAt(0);
     const tableData = dataByCode(tableCode);
-    return `${key} = (SELECT id FROM ${tableData.table} WHERE ${tableData.column} = ${auxTables[key]})`;
+
+    const statementFrag = `${key} = (SELECT id FROM ${tableData.table} WHERE ${tableData.column} = $${valueCount})`;
+    valueCount += 1;
+    valuesArr.push(auxTables[key]);
+   
+    return statementFrag;
   });
   const joinedAuxStment = auxTableStatement.join(", ");
 
-  const conditionalStatement = ` WHERE id = ${modelId}`
+  valuesArr.push(modelId);
+  const conditionalStatement = ` WHERE id = $${valueCount}`;
   const finalStatement = base + joinedMdlStment + ", " + joinedAuxStment + conditionalStatement;
-  console.log("The update statement so far: ", finalStatement);
 
-  // reduce the aux tables into the update statement
-  // join any beginning, middle and end statements
-  // pass the query through db
-  // return rows which should have the result of the query
-}
-
-publishUpdates(
-  "cars", 
-  1,
-  {
-    name: "Neo 3.0",
-    img_url: "https://url.com",
-    description: "this is an example",
-  },
-  {
-    manufacturer_id: "Kyosho",
-    terrain_id: "Off-Road Racing",
-    scale_id: "1:10",
+  return {
+    statement: finalStatement,
+    valuesArray: valuesArr
   }
-);
+}
 
 
 module.exports = {
@@ -322,4 +319,5 @@ module.exports = {
   fetchFieldData,
   duplicateCheck,
   modelDataById,
+  genUpdateStatement
 };
