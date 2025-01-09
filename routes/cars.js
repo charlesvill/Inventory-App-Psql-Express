@@ -64,7 +64,7 @@ const publishEditsMW = (req, res, next) => {
 }
 
 const profileMW = (req, res, next) => {
-
+  carController.viewProfile(req, res);
 }
 
 //
@@ -110,6 +110,12 @@ carRouter.post(
 
 
 // router for /car/profile/id
+carRouter.get(
+  "/profile/:id",
+  IDValidator,
+  profileMW,
+  errHandler
+);
 
 module.exports = carRouter;
 

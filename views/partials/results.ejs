@@ -10,16 +10,18 @@
     <% } %>
    <% content.rows.map((element)=> { %>
             <div class="item">
-               <div class="frame">
-                   <img src=<%=`${element.img_url}` %> alt="image" class="image">
-               </div>
-               <div>
-                    <div>
-                        <p class="bold"><%= element.name %> </p>
-                   </div>
-                   <div>
-                        <p><%= element.description%> </p>
-                   </div>
-               </div>
+               <a href="/cars/profile/<%= element.id %>" class="linkFrame">
+                  <div class="frame">
+                      <img src=<%=`${element.img_url}` %> alt="image" class="image">
+                  </div>
+                  <div>
+                       <div>
+                           <p class="bold"><%= element.name %> </p>
+                      </div>
+                      <div>
+                           <p><%= element.description%> </p>
+                      </div>
+                  </div>
+               </a>
             </div>
     <% }); %>

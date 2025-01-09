@@ -118,6 +118,7 @@ async function selectByFilter(model, tableInfo) {
   const firstFilter = tableData.shift();
   const baseQuery = `
   SELECT ${firstFilter.table}.${firstFilter.column} AS label,   
+  ${model}.id,
   ${model}.name,
   ${model}.description,
   ${model}.img_url

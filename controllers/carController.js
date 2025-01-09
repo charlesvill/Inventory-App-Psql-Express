@@ -50,18 +50,32 @@ async function publishEdits(req, res) {
     }
   );
   console.log(updateData);
-  
+
   const dbResults = await db.queryByStatement(updateData.statement, ...updateData.valuesArray);
   console.log("db results for update", dbResults);
+
+  res.redirect(`/cars/profile/${id}`);
 }
 
 // profile controller
 //
 // get all the fields
+// db methods will be the same as the edit methods. just get all fields for that car. 
 // get profile ejs
 // respond w/ data passed through
 
+async function viewProfile(req, res) {
+  const id = req.params.id;
+  const fields = await model.modelDataById("cars", id);
+
+  res.render("profile",
+    {
+      data: fields
+    });
+}
+
 module.exports = {
   editModel,
-  publishEdits
+  publishEdits,
+  viewProfile
 }
