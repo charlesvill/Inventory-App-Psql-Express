@@ -213,13 +213,6 @@ async function queryByStatement(statement, ...qParams) {
 // )
 // WHERE id = 1;
 
-async function updateModel(modelType, column, fields) {
-  // need the table name for each field being updated
-  const exQuery = `
-  UPDATE ${modelType}
-  SET ${column} = 
-`
-}
 
 module.exports = {
   selectAllOfType,

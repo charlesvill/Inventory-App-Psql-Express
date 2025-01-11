@@ -274,6 +274,8 @@ function genUpdateStatement(modelType, modelId, modelTableFields, auxTables) {
   // and fields that need a nested query to update an id based on a given value
   // values are counted and stored separately for the purpose of placeholder values in the statement
 
+  // there should be something that checks if the manufacturer exists and it
+  // should mimick behvarior in the insertcarfields method in add controller. 
   const modelTableKeys = Object.keys(modelTableFields);
   const auxTableKeys = Object.keys(auxTables);
   const base = `UPDATE ${modelType} `;
